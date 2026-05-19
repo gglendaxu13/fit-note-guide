@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIT Note Quick Reference — Lambeth Walk GP</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f0f7fa; color: #1e293b; font-size: 15px; line-height: 1.55; }
+  .top-bar { background: #028090; height: 6px; }
+  header { background: #1a3a4a; color: white; padding: 18px 16px 14px; }
+  header h1 { font-size: 19px; font-weight: 700; line-height: 1.3; }
+  header p { font-size: 11.5px; color: #7baebb; margin-top: 4px; }
+  .badge { display: inline-block; background: #028090; color: white; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-top: 6px; letter-spacing: 0.5px; }
+
+  .section { margin: 14px 12px 0; }
+  .section-header { display: flex; align-items: center; gap: 8px; color: white; padding: 9px 12px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 700; }
+  .blue  { background: #0369a1; }
+  .teal  { background: #028090; }
+  .green { background: #059669; }
+  .section-body { background: white; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; padding: 10px; }
+
+  /* ── NUMBERED ROW ── */
+  .num-row { display: flex; gap: 9px; margin-bottom: 8px; align-items: flex-start; }
+  .num-row:last-child { margin-bottom: 0; }
+  .num-circle { min-width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; flex-shrink: 0; margin-top: 2px; }
+  .row-content { flex: 1; min-width: 0; }
+
+  /* ── CHECKBOX ── */
+  .cb-wrap { display: flex; align-items: center; gap: 9px; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; }
+  .cb {
+    width: 22px; height: 22px; border-radius: 5px; border: 2px solid #cbd5e1;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    background: white; transition: background 0.15s, border-color 0.15s;
+  }
+  .cb-wrap.done .cb { background: #028090; border-color: #028090; }
+  .cb-wrap.done .cb::after { content: '✓'; color: white; font-size: 13px; font-weight: 800; }
+  .cb-label { font-size: 13.5px; font-weight: 700; color: #1a3a4a; line-height: 1.3; flex: 1; transition: color 0.15s; }
+  .cb-wrap.done .cb-label { color: #94a3b8; text-decoration: line-through; }
+  .cb-arrow { font-size: 11px; color: #94a3b8; transition: transform 0.2s; flex-shrink: 0; margin-left: 4px; }
+  .cb-arrow.open { transform: rotate(180deg); }
+
+  /* ── ACCORDION BODY ── */
+  .acc-body { display: none; padding: 7px 0 2px 31px; }
+  .acc-body.open { display: block; }
+  .acc-body ul { padding-left: 14px; }
+  .acc-body li { font-size: 11.5px; color: #475569; margin-bottom: 3px; line-height: 1.45; }
+  .acc-body p { font-size: 11.5px; color: #475569; margin-bottom: 4px; line-height: 1.45; }
+  .good { color: #059669; font-size: 11px; font-weight: 600; }
+  .bad  { color: #dc2626; font-size: 11px; font-weight: 600; }
+  .note { color: #059669; font-size: 11px; font-weight: 600; display: block; margin-top: 3px; }
+
+  .item-divider { border: none; border-top: 1px solid #f1f5f9; margin: 7px 0; }
+
+  /* ── RESET BUTTON ── */
+  .reset-wrap { text-align: center; margin-top: 10px; }
+  .reset-btn { padding: 5px 18px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 11px; color: #64748b; cursor: pointer; font-family: inherit; }
+  .reset-btn:active { background: #e2e8f0; }
+
+  /* ── SIGNPOSTING ── */
+  .sp-label { font-size: 10.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin: 10px 0 5px; }
+  .sp-label:first-child { margin-top: 0; }
+  .sp-item { display: flex; gap: 10px; margin-bottom: 7px; align-items: flex-start; }
+  .sp-item:last-child { margin-bottom: 0; }
+  .sp-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .sp-content { flex: 1; }
+  .sp-trigger { display: flex; align-items: center; justify-content: space-between; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .sp-trigger h3 { font-size: 13px; font-weight: 700; color: #1a3a4a; }
+
+  /* ── DISCUSSION POINTS ── */
+  .discuss-section { margin: 14px 12px 0; }
+  .discuss-trigger { display: flex; align-items: center; justify-content: space-between; background: #7c3aed; color: white; padding: 10px 13px; border-radius: 8px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+  .discuss-trigger span { font-size: 13px; font-weight: 700; }
+  .discuss-arrow { font-size: 11px; transition: transform 0.2s; }
+  .discuss-trigger.open .discuss-arrow { transform: rotate(180deg); }
+  .discuss-body { display: none; background: white; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; padding: 12px; }
+  .discuss-body.open { display: block; }
+  .quote-box { background: #1a3a4a; border-radius: 7px; padding: 10px 13px; margin-bottom: 7px; }
+  .quote-box:last-child { margin-bottom: 0; }
+  .quote-box p { color: white; font-size: 12px; font-style: italic; line-height: 1.5; }
+  .quote-box p::before { content: '\275D  '; color: #028090; font-style: normal; }
+
+  .footer { background: #1a3a4a; color: #7baebb; text-align: center; font-size: 10px; padding: 10px; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+<header>
+  <h1>FIT Note Consultation Quick Reference</h1>
+  <p>Lambeth Walk GP  |  Dr Glenda Xu GPST2  |  2026</p>
+  <span class="badge">📋 TAP HEADINGS TO EXPAND  |  ✓ TO CHECK OFF</span>
+</header>
+
+<!-- ══ SECTION A ════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header blue">📋  Section A — Taking a History</div>
+  <div class="section-body">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#0369a1">1</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Employment &amp; Self-Certification</span>
+          <span class="cb-arrow" id="arr-a1">▼</span>
+        </div>
+        <div class="acc-body" id="body-a1">
+          <ul>
+            <li>Are they currently employed?</li>
+            <li>What is the role? Manual / office / client-facing?</li>
+            <li>Have they already self-certified for 7 days?</li>
+            <li>If unemployed — is a FIT note clinically indicated?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#0369a1">2</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Nature of the Job</span>
+          <span class="cb-arrow" id="arr-a2">▼</span>
+        </div>
+        <div class="acc-body" id="body-a2">
+          <ul>
+            <li>What do they actually do day-to-day?</li>
+            <li>Cognitive and physical demands of the role?</li>
+            <li>Could any duties be modified or reduced?</li>
+            <li>Is home working possible?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#0369a1">3</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Health Beliefs</span>
+          <span class="cb-arrow" id="arr-a3">▼</span>
+        </div>
+        <div class="acc-body" id="body-a3">
+          <ul>
+            <li>Do they feel they must be 100% before returning?</li>
+            <li>What are their expectations around recovery?</li>
+            <li>Do symptoms resolve when on holiday? <em>(suggests work as a driver)</em></li>
+            <li>Previous difficulty returning to work?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#0369a1">4</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Other Responsibilities</span>
+          <span class="cb-arrow" id="arr-a4">▼</span>
+        </div>
+        <div class="acc-body" id="body-a4">
+          <ul>
+            <li>Caring responsibilities at home?</li>
+            <li>Are these affecting capacity to work or recover?</li>
+            <li>Financial stressors driving the request?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#0369a1">5</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Work History</span>
+          <span class="cb-arrow" id="arr-a5">▼</span>
+        </div>
+        <div class="acc-body" id="body-a5">
+          <ul>
+            <li>Previous time off — was returning to work difficult?</li>
+            <li>How did previous absences resolve?</li>
+            <li>Do symptoms improve significantly on holiday?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="reset-wrap">
+      <button class="reset-btn" onclick="resetSection(this)">↺ Reset Section A</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION B ════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header teal">✅  Section B — The Consultation</div>
+  <div class="section-body">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#028090">1</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Functional Impact</span>
+          <span class="cb-arrow" id="arr-b1">▼</span>
+        </div>
+        <div class="acc-body" id="body-b1">
+          <p>Ask: <em>"What is it about your condition that stops you working right now?"</em></p>
+          <p>Document specific limitations — not just the diagnosis.</p>
+          <p class="good">✅ "Unable to concentrate &gt;20 mins. Cannot face customer contact."</p>
+          <p class="bad">❌ "Anxiety — not fit for work"</p>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#028090">2</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">May be Fit for Work?</span>
+          <span class="cb-arrow" id="arr-b2">▼</span>
+        </div>
+        <div class="acc-body" id="body-b2">
+          <p>Consider actively before defaulting to 'not fit for work':</p>
+          <ul>
+            <li>Phased return (e.g. 3 days/week initially)</li>
+            <li>Altered hours (e.g. later start, avoid rush hour)</li>
+            <li>Amended duties (e.g. less patient-facing work)</li>
+            <li>Workplace adaptations (quiet space, WFH days)</li>
+          </ul>
+          <span class="note">If 'not fit' — document why adjustments aren't appropriate.</span>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#028090">3</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Duration &amp; Review</span>
+          <span class="cb-arrow" id="arr-b3">▼</span>
+        </div>
+        <div class="acc-body" id="body-b3">
+          <ul>
+            <li>First certificate: typically no more than 3 months</li>
+            <li>Repeat notes: reassess functionally — do not copy previous note</li>
+            <li>Ask: <em>"What needs to change for you to feel ready to return?"</em></li>
+            <li>Consider F2F appointment for repeat notes</li>
+            <li>Set a defined review date — no open-ended notes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#028090">4</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Signpost</span>
+          <span class="cb-arrow" id="arr-b4">▼</span>
+        </div>
+        <div class="acc-body" id="body-b4">
+          <p>Offer at least one relevant resource every time. Document what was offered in the clinical record. See signposting section below.</p>
+        </div>
+      </div>
+    </div>
+    <hr class="item-divider">
+
+    <div class="num-row">
+      <div class="num-circle" style="background:#028090">5</div>
+      <div class="row-content">
+        <div class="cb-wrap" onclick="toggleItem(this)">
+          <div class="cb"></div>
+          <span class="cb-label">Plan the Follow-Up</span>
+          <span class="cb-arrow" id="arr-b5">▼</span>
+        </div>
+        <div class="acc-body" id="body-b5">
+          <p>Frame as a partnership:</p>
+          <p><em>"Let's review in 4 weeks — the aim is to think about what a phased return might look like."</em></p>
+          <p style="margin-top:4px;font-size:11px;color:#64748b;">Ask reception to book follow-up automatically when a mental health FIT note is printed.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reset-wrap">
+      <button class="reset-btn" onclick="resetSection(this)">↺ Reset Section B</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIGNPOSTING ═══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header green">🗺️  Where to Signpost</div>
+  <div class="section-body">
+
+    <div class="sp-label">🏥 Mental Health</div>
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#028090"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>NHS Talking Therapies</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Self-referral. First line for depression, anxiety, stress, PTSD. Free. No GP referral needed.</p></div>
+      </div>
+    </div>
+    <hr class="item-divider">
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#028090"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>Crisis Hotline — SLaM</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>South London &amp; Maudsley NHS 24/7: <strong>0800 731 2864</strong></p></div>
+      </div>
+    </div>
+
+    <div class="sp-label">🏘️ Community Support</div>
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#d97706"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>DWP Services (Namina)</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Many free appointments. Access to Work grants: <a href="https://www.gov.uk/access-to-work" style="color:#0369a1;">gov.uk/access-to-work</a></p></div>
+      </div>
+    </div>
+    <hr class="item-divider">
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#d97706"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>Social Prescribing Link Workers</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Community groups, debt advice, housing support, volunteering — via your PCN link worker.</p></div>
+      </div>
+    </div>
+    <hr class="item-divider">
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#d97706"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>Southwark Perks 🌟</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><ul><li>Free gym use on Fridays and Saturdays</li><li>Adult Learning English Lessons available in Southwark</li></ul></div>
+      </div>
+    </div>
+
+    <div class="sp-label">💼 Employment Support</div>
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#059669"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>Shaw Trust</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Employment Support Programme for people with mental health conditions.</p></div>
+      </div>
+    </div>
+    <hr class="item-divider">
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#059669"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>Southwark 'Connect to Work'</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Email: <a href="mailto:connecttowork@southwark.gov.uk" style="color:#0369a1;">connecttowork@southwark.gov.uk</a></p></div>
+      </div>
+    </div>
+    <hr class="item-divider">
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#059669"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>Southwark Works</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Free employment service — one-to-one support to find and keep work.</p></div>
+      </div>
+    </div>
+
+    <div class="sp-label">📚 Patient Information</div>
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#7c3aed"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>Mind</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Mental health at work: <a href="https://www.mind.org.uk" style="color:#0369a1;">mind.org.uk</a></p></div>
+      </div>
+    </div>
+    <hr class="item-divider">
+    <div class="sp-item">
+      <div class="sp-dot" style="background:#7c3aed"></div>
+      <div class="sp-content">
+        <div class="sp-trigger" onclick="toggleSp(this)">
+          <h3>ACAS</h3><span class="cb-arrow">▼</span>
+        </div>
+        <div class="acc-body"><p>Employee rights around sick leave and workplace adjustments: <a href="https://www.acas.org.uk" style="color:#0369a1;">acas.org.uk</a></p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ DISCUSSION POINTS ═════════════════════════════════════════ -->
+<div class="discuss-section">
+  <div class="discuss-trigger" onclick="toggleDiscuss(this)">
+    <span>💬  Helpful Discussion Points — tap to expand</span>
+    <span class="discuss-arrow">▼</span>
+  </div>
+  <div class="discuss-body">
+    <div class="quote-box"><p>Work is usually beneficial for physical and mental health in the long run. The risk of not returning increases the longer you are off.</p></div>
+    <div class="quote-box"><p>It is not expected that you need to be 100% before you return to work.</p></div>
+    <div class="quote-box"><p>We can issue a note with an end date and review you to consider returning to work with a 'May be Fit' option.</p></div>
+    <div class="quote-box"><p>With these adjustments, we hope to help your employer understand what support might help facilitate you going back to work.</p></div>
+    <div class="quote-box"><p>Our job is not just to sign you off — it's also to help you figure out how to get back.</p></div>
+  </div>
+</div>
+
+<div style="height:16px"></div>
+<div class="footer">FIT Notes QIP  |  Lambeth Walk GP  |  Dr Glenda Xu GPST2  |  2026</div>
+
+<script>
+  function toggleItem(cbWrap) {
+    // Toggle accordion
+    const arrow = cbWrap.querySelector('.cb-arrow');
+    const body  = cbWrap.parentElement.querySelector('.acc-body');
+    const isOpen = body.classList.contains('open');
+    if (!isOpen) {
+      body.classList.add('open');
+      arrow.classList.add('open');
+    } else {
+      // On second tap: toggle the checkbox state instead of closing
+      cbWrap.classList.toggle('done');
+    }
+  }
+
+  // Long-press or double-tap to check without needing to open first
+  let pressTimer;
+  document.querySelectorAll('.cb-wrap').forEach(wrap => {
+    // Also allow tapping just the checkbox square to toggle done state directly
+    wrap.querySelector('.cb').addEventListener('click', function(e) {
+      e.stopPropagation();
+      wrap.classList.toggle('done');
+    });
+  });
+
+  function toggleSp(trigger) {
+    const arrow = trigger.querySelector('.cb-arrow');
+    const body  = trigger.nextElementSibling;
+    body.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  function toggleDiscuss(trigger) {
+    trigger.classList.toggle('open');
+    trigger.nextElementSibling.classList.toggle('open');
+  }
+
+  function resetSection(btn) {
+    const sectionBody = btn.closest('.section-body');
+    sectionBody.querySelectorAll('.cb-wrap').forEach(w => w.classList.remove('done'));
+    sectionBody.querySelectorAll('.acc-body').forEach(b => b.classList.remove('open'));
+    sectionBody.querySelectorAll('.cb-arrow').forEach(a => a.classList.remove('open'));
+  }
+</script>
+</body>
+</html>
